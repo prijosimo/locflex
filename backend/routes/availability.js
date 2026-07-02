@@ -5,7 +5,7 @@ const router = express.Router();
 // Importing the database connection pool
 const pool = require('../config/db');
 
-// To save a new availability entry for a user
+// POST /api/availability: save a new availability entry for a user
 router.post('/', async (req, res) => {
     const { user_id, date, status, notes } = req.body;
 
@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
     }
     });
 
-// To retirve all availability entries for a certain user
+// GET /api/availability/:userId — retrieve all availability entries for a certain user
 router.get('/:userId', async (req, res) => {
     const { userId } = req.params;
 

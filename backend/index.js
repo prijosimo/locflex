@@ -13,6 +13,9 @@ const pool = require('./config/db');
 // Importing the availability routes
 const availabilityRoutes = require('./routes/availability');
 
+// Importing the capacity routes
+const capacityRoutes = require('./routes/capacity');
+
 // Creating the Express application instance (the actual server object)
 const app = express();
 
@@ -24,6 +27,9 @@ app.use(express.json());
 
 // Mounting the availability routes under the /api/availability path
 app.use('/api/availability', availabilityRoutes);
+
+// Mount capacity routes at /api/capacity
+app.use('/api/capacity', capacityRoutes);
 
 // Just a health check to confirm the server is running before adding real features
 app.get('/api/health', (req, res) => {
