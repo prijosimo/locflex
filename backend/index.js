@@ -10,6 +10,9 @@ require('dotenv').config();
 // Importing the database connection pool
 const pool = require('./config/db');
 
+// Importing the availability routes
+const availabilityRoutes = require('./routes/availability');
+
 // Creating the Express application instance (the actual server object)
 const app = express();
 
@@ -18,6 +21,9 @@ app.use(cors());
 
 // Allowing Express to  parse incoming JSON request bodies automatically
 app.use(express.json());
+
+// Mounting the availability routes under the /api/availability path
+app.use('/api/availability', availabilityRoutes);
 
 // Just a health check to confirm the server is running before adding real features
 app.get('/api/health', (req, res) => {
