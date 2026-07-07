@@ -26,3 +26,15 @@ CREATE TABLE capacity_settings (
     weekly_word_count INTEGER NOT NULL DEFAULT 0,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Storing tasks assigned to users, including word count and estimated hours
+CREATE TABLE assignments (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    task_name VARCHAR(255) NOT NULL,
+    word_count INTEGER NOT NULL DEFAULT 0,
+    estimated_hours DECIMAL(5,2) DEFAULT 0,
+    due_date DATE,
+    status VARCHAR(20) CHECK (status IN ('pending', 'in_progress', 'completed')) DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

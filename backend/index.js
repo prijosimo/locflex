@@ -16,6 +16,9 @@ const availabilityRoutes = require('./routes/availability');
 // Importing the capacity routes
 const capacityRoutes = require('./routes/capacity');
 
+// Importing the assignment routes
+const assignmentRoutes = require('./routes/assignments');
+
 // Creating the Express application instance (the actual server object)
 const app = express();
 
@@ -28,8 +31,11 @@ app.use(express.json());
 // Mounting the availability routes under the /api/availability path
 app.use('/api/availability', availabilityRoutes);
 
-// Mount capacity routes at /api/capacity
+// Mounting capacity routes at /api/capacity
 app.use('/api/capacity', capacityRoutes);
+
+// Mounting assignment routes at /api/assignments
+app.use('/api/assignments', assignmentRoutes);
 
 // Just a health check to confirm the server is running before adding real features
 app.get('/api/health', (req, res) => {
