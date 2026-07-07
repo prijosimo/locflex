@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-// Component of the form that lets a user set  daily and weekly word-count capacity
+// Component of the form that lets a user set  daily and weekly word count capacity
 function CapacityForm({ onCapacitySaved }) {
     const [dailyWordCount, setDailyWordCount] = useState("");
     const [weeklyWordCount, setWeeklyWordCount] = useState("");
@@ -35,7 +35,7 @@ function CapacityForm({ onCapacitySaved }) {
     return (
         <div className="bg-white rounded-xl shadow p-6 w-full max-w-md">
             <h2 className="text-xl font-semibold text-gray-700 mb-4">
-                Set Word-Count Capacity
+                Set Word Count Capacity
             </h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">

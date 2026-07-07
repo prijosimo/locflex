@@ -35,6 +35,7 @@ app.use('/api/availability', availabilityRoutes);
 app.use('/api/capacity', capacityRoutes);
 
 // Mounting assignment routes at /api/assignments
+
 app.use('/api/assignments', assignmentRoutes);
 
 // Just a health check to confirm the server is running before adding real features

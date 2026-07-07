@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AvailabilityForm from "./components/AvailabilityForm";
 import CapacityForm from "./components/CapacityForm";
+import AssignmentForm from "./components/AssignmentForm";
 import Dashboard from "./components/Dashboard";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
       {/* Forms to log new data */}
       <AvailabilityForm onEntryAdded={() => setRefresh((r) => r + 1)} />
       <CapacityForm onCapacitySaved={() => setRefresh((r) => r + 1)} />
+      <AssignmentForm onAssignmentAdded={() => setRefresh((r) => r + 1)} />
     </div>
   );
 }
