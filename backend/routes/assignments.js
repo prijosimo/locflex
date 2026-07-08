@@ -58,4 +58,47 @@ router.get('/:userId/workload', async (req, res) => {
     }
 });
 
+// GET /api/assignments/:userId/overload to check if the user exceeds his or her capacity
+router.get('/:userId/overload', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        // Get total assigned word count for incomplete tasks
+        const workloadResult = await pool.query(
+            `SELECT COALESCE(SUM(word_count), 0) AS total_words
+            FROM assignments 
+            WHERE user_id = $1 AND status != 'completed'`,
+        [userId]
+        );
+
+    // Get the user's capacity settings
+    const capacityResult = await pool.query(
+        'SELECT daily_word_count, weekly_word_count FROM capacity_settings WHERE user_id = $1',
+        [userId]
+    );
+
+    const totalWords = parseInt(workloadResult.rows[0].total_words);
+    const capacity = capacityResult.rows[0];
+
+    // If no capacity settings is found, a warning shoulçd be returned
+    if (!capacity) {
+        return res.json({ overloaded: false, message: 'No capacity settings found' });
+    }
+
+    const weeklyLimit = capacity.weekly_word_count;
+    const overloaded = totalWords > weeklyLimit;
+
+    res.json({
+        overloaded,
+        total_words: totalWords,
+        weekly_limit: weeklyLimit,
+        message: overloaded
+            ? `Warning: assigned workload (${totalWords} words) exceeds weekly capacity (${weeklyLimit} words)`
+            : `Workload is within capacity (${totalWords} / ${weeklyLimit} words)`
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 module.exports = router;

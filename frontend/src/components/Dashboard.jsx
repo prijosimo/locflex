@@ -5,6 +5,7 @@ function Dashboard({ refreshTrigger }) {
     const [availability, setAvailability] = useState([]);
     const [capacity, setCapacity] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [overload, setOverload] = useState(null);
 
   // This part fetches data from the backend whenever the component loads or refreshTrigger changes
     useEffect(() => {
@@ -23,11 +24,20 @@ function Dashboard({ refreshTrigger }) {
             const capRes = await fetch("http://localhost:5000/api/capacity/1");
             const capData = await capRes.json();
             setCapacity(capData);
+
+
+            // This part fetches the overload status for user 1
+            const overloadRes = await fetch("http://localhost:5000/api/assignments/1/overload");
+            const overloadData = await overloadRes.json();
+            setOverload(overloadData);
+
         } catch (err) {
             console.error("Error fetching dashboard data:", err);
         } finally {
             setLoading(false);
         }
+
+
     };
 
   // Help to format a date string into a readable format
@@ -51,6 +61,17 @@ function Dashboard({ refreshTrigger }) {
 
         return (
             <div className="w-full max-w-2xl space-y-6">
+
+                {/* Overload warning banner */}
+                {overload && (
+                    <div className={`w-full rounded-xl p-4 text-sm font-medium ${
+                        overload.overloaded
+                            ? 'bg-red-100 text-red-700 border border-red-300'
+                            : 'bg-green-100 text-green-700 border border-green-300'
+                    }`}>
+                        {overload.overloaded ? '⚠️ ' : '✅ '}{overload.message}
+                    </div>
+                )}
 
                 {/* Capacity summary card */}
                 <div className="bg-white rounded-xl shadow p-6">
