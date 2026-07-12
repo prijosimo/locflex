@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 function Dashboard({ refreshTrigger }) {
     const [availability, setAvailability] = useState([]);
     const [capacity, setCapacity] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [overload, setOverload] = useState(null);
+    const [loading, setLoading] = useState(true); // I added this to show a loading message when data is being fetched from the API
+    const [overload, setOverload] = useState(null); // This compares workload against capacity
+    const [hours, setHours] = useState(null); // This stores the total number of tasks and estimated hours from the assignments API
 
   // This part fetches data from the backend whenever the component loads or refreshTrigger changes
     useEffect(() => {
@@ -30,6 +31,10 @@ function Dashboard({ refreshTrigger }) {
             const overloadRes = await fetch("http://localhost:5000/api/assignments/1/overload");
             const overloadData = await overloadRes.json();
             setOverload(overloadData);
+
+            const hoursRes = await fetch("http://localhost:5000/api/assignments/1/hours");
+            const hoursData = await hoursRes.json();
+            setHours(hoursData);
 
         } catch (err) {
             console.error("Error fetching dashboard data:", err);
@@ -99,6 +104,35 @@ function Dashboard({ refreshTrigger }) {
                     <p className="text-sm text-gray-400">No capacity settings found.</p>
                     )}
                 </div>
+
+                {/* Workload summary card */}
+                <div className="bg-white rounded-xl shadow p-6">
+                <h2 className="text-xl font-semibold text-gray-700 mb-4">
+                    Workload Summary
+                </h2>
+                {hours ? (
+                    <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-orange-50 rounded-lg p-4 text-center">
+                        <p className="text-sm text-gray-500">Total Tasks</p>
+                        <p className="text-2xl font-bold text-orange-600">
+                        {hours.total_tasks}
+                        </p>
+                        <p className="text-xs text-gray-400">assigned</p>
+                    </div>
+                    <div className="bg-teal-50 rounded-lg p-4 text-center">
+                        <p className="text-sm text-gray-500">Estimated Hours</p>
+                        <p className="text-2xl font-bold text-teal-600">
+                        {parseFloat(hours.total_hours).toFixed(1)}
+                        </p>
+                        <p className="text-xs text-gray-400">hours</p>
+                    </div>
+                    </div>
+                ) : (
+                    <p className="text-sm text-gray-400">No workload data found.</p>
+                )}
+                </div>
+
+
 
                 {/* Availability entries card */}
                 <div className="bg-white rounded-xl shadow p-6">

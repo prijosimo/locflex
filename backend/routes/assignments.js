@@ -101,4 +101,23 @@ router.get('/:userId/overload', async (req, res) => {
     }
 });
 
+// GET /api/assignments/:userId/hours to get total estimated hours for users
+router.get('/:userId/hours', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const result = await pool.query(
+        `SELECT 
+            COALESCE(SUM(estimated_hours), 0) AS total_hours,
+            COUNT(*) AS total_tasks
+        FROM assignments 
+        WHERE user_id = $1 AND status != 'completed'`,
+        [userId]
+        );
+        res.json(result.rows[0]);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 module.exports = router;
