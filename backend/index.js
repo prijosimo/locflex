@@ -19,6 +19,9 @@ const capacityRoutes = require('./routes/capacity');
 // Importing the assignment routes
 const assignmentRoutes = require('./routes/assignments');
 
+// Importing the auth routes for registration and login
+const authRoutes = require('./routes/auth');
+
 // Creating the Express application instance (the actual server object)
 const app = express();
 
@@ -37,6 +40,9 @@ app.use('/api/capacity', capacityRoutes);
 // Mounting assignment routes at /api/assignments
 
 app.use('/api/assignments', assignmentRoutes);
+
+// Mounting auth routes at /api/auth
+app.use('/api/auth', authRoutes);
 
 // Just a health check to confirm the server is running before adding real features
 app.get('/api/health', (req, res) => {
