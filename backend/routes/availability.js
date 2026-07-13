@@ -5,6 +5,9 @@ const router = express.Router();
 // Importing the database connection pool
 const pool = require('../config/db');
 
+// Importing the auth middleware to protect routes
+const authenticateToken = require('../middleware/auth');
+
 // POST /api/availability: save a new availability entry for a user
 router.post('/', async (req, res) => {
     const { user_id, date, status, notes } = req.body;
@@ -28,7 +31,7 @@ router.post('/', async (req, res) => {
     });
 
 // GET /api/availability/:userId — retrieve all availability entries for a certain user
-router.get('/:userId', async (req, res) => {
+router.get('/:userId', authenticateToken, async (req, res) => {
     const { userId } = req.params;
 
     try {
