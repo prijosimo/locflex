@@ -31,7 +31,7 @@ router.post('/', async (req, res) => {
     });
 
 // GET /api/availability/:userId — retrieve all availability entries for a certain user
-router.get('/:userId', authenticateToken, async (req, res) => {
+router.get('/:userId', async (req, res) => {
     const { userId } = req.params;
 
     try {
