@@ -8,6 +8,7 @@ function AuthForm({ onLogin }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
+    const [role, setRole] = useState("linguist");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,7 +23,7 @@ function AuthForm({ onLogin }) {
             body: JSON.stringify(
                 isLogin
                     ? { email, password }
-                    : { name, email, password, timezone: "Europe/Dublin" }
+                    : { name, email, password, timezone: "Europe/Dublin", role }
             ),
         });
 
@@ -89,6 +90,7 @@ function AuthForm({ onLogin }) {
                         />
                     </div>
 
+                    {/* Password field */}
                     <div>
                         <label className="block text-sm font-medium text-gray-600 mb-1">
                             Password
@@ -103,12 +105,32 @@ function AuthForm({ onLogin }) {
                         />
                     </div>
 
+                    {/* Role selector — only shown in register mode */}
+                    {!isLogin && (
+                        <div>
+                            <label className="block text-sm font-medium text-gray-600 mb-1">
+                                Role
+                            </label>
+                            <select
+                                value={role}
+                                onChange={(e) => setRole(e.target.value)}
+                                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            >
+                            <option value="linguist">Linguist</option>
+                            <option value="pm">Project Manager</option>
+                            </select>
+                        </div>
+                    )}
+
+                    {/* Submit button */}
                     <button
                         type="submit"
                         className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition"
                     >
                         {isLogin ? "Log In" : "Register"}
                     </button>
+
+
 
                     {message && (
                         <p className="text-sm text-center text-green-600">{message}</p>

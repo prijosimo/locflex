@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 
 // POST /api/auth/register to create a new user account
 router.post('/register', async (req, res) => {
-    const { name, email, password, timezone } = req.body;
+    const { name, email, password, timezone, role } = req.body;
 
     // Validation that the required fields are there    
     if (!name || !email || !password) {
@@ -19,8 +19,8 @@ router.post('/register', async (req, res) => {
 
         // Inserting the new user into the database by storing the hashed password
         const result = await pool.query(
-            'INSERT INTO users (name, email, password, timezone) VALUES ($1, $2, $3, $4) RETURNING id, name, email, timezone',
-            [name, email, hashedPassword, timezone || 'UTC']
+            'INSERT INTO users (name, email, password, timezone, role) VALUES ($1, $2, $3, $4, $5) RETURNING id, name, email, timezone, role',
+[name, email, hashedPassword, timezone || 'UTC', role || 'linguist']
         );
 
         // Returning a success message and the new user's data
@@ -70,7 +70,7 @@ router.post('/login', async (req, res) => {
         res.json({
             message: 'Login successful',
             token,
-            user: { id: user.id, name: user.name, email: user.email }
+            user: { id: user.id, name: user.name, email: user.email, role: user.role }
         });
     } catch (err) {
         res.status(500).json({ error: err.message });

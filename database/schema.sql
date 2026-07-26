@@ -38,3 +38,5 @@ CREATE TABLE assignments (
     status VARCHAR(20) CHECK (status IN ('pending', 'in_progress', 'completed')) DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+role VARCHAR(20) DEFAULT 'linguist' CHECK (role IN ('pm', 'linguist')),

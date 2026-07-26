@@ -17,7 +17,7 @@ const handleSubmit = async (e) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                user_id: 1,
+                user_id: JSON.parse(localStorage.getItem('user'))?.id,
                 task_name: taskName,
                 word_count: parseInt(wordCount),
                 estimated_hours: parseFloat(estimatedHours),

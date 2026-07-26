@@ -15,24 +15,26 @@ function Dashboard({ refreshTrigger }) {
 
     const fetchData = async () => {
         setLoading(true);
+        // Geting the logged-in user's ID from localStorag
+        const userId = JSON.parse(localStorage.getItem('user'))?.id;
         try {
-            // This part fetches availability entries for user 1
-            const availRes = await fetch("http://localhost:5000/api/availability/1");
+            // This part fetches availability entries for the logged-in user
+            const availRes = await fetch(`http://localhost:5000/api/availability/${userId}`);
             const availData = await availRes.json();
             setAvailability(availData);
 
-            // This part fetches capacity settings for user 1
-            const capRes = await fetch("http://localhost:5000/api/capacity/1");
+            // This part fetches capacity settings for the logged-in user
+            const capRes = await fetch(`http://localhost:5000/api/capacity/${userId}`);
             const capData = await capRes.json();
-            setCapacity(capData);
+            setCapacity(capData);   
 
 
-            // This part fetches the overload status for user 1
-            const overloadRes = await fetch("http://localhost:5000/api/assignments/1/overload");
+            // This part fetches the overload status for the logged-in user by comparing workload against capacity
+            const overloadRes = await fetch(`http://localhost:5000/api/assignments/${userId}/overload`);
             const overloadData = await overloadRes.json();
             setOverload(overloadData);
 
-            const hoursRes = await fetch("http://localhost:5000/api/assignments/1/hours");
+            const hoursRes = await fetch(`http://localhost:5000/api/assignments/${userId}/hours`);
             const hoursData = await hoursRes.json();
             setHours(hoursData);
 

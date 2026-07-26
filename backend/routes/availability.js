@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
     }
     });
 
-// GET /api/availability/:userId — retrieve all availability entries for a certain user
+// GET /api/availability/:userId to retrieve all availability entries for a certain user
 router.get('/:userId', async (req, res) => {
     const { userId } = req.params;
 
@@ -44,5 +44,25 @@ router.get('/:userId', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
     });
+
+// GET /api/availability to get all users' availability for PM view
+router.get('/', async (req, res) => {
+    try {
+        const result = await pool.query(
+        `SELECT u.id, u.name, u.email, u.role,
+            ae.date, ae.status, ae.notes,
+            cs.daily_word_count, cs.weekly_word_count
+        FROM users u
+        LEFT JOIN availability_entries ae ON ae.user_id = u.id
+        LEFT JOIN capacity_settings cs ON cs.user_id = u.id
+        WHERE u.role = 'linguist'
+        ORDER BY u.name, ae.date ASC`
+        );
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 
 module.exports = router;

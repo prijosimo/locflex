@@ -15,7 +15,7 @@ function CapacityForm({ onCapacitySaved }) {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    user_id: 1,
+                    user_id: JSON.parse(localStorage.getItem('user'))?.id,
                     daily_word_count: parseInt(dailyWordCount),
                     weekly_word_count: parseInt(weeklyWordCount),
                 }),

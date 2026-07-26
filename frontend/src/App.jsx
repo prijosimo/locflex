@@ -4,6 +4,7 @@ import CapacityForm from "./components/CapacityForm";
 import AssignmentForm from "./components/AssignmentForm";
 import Dashboard from "./components/Dashboard";
 import AuthForm from "./components/AuthForm";
+import PMDashboard from "./components/PMDashboard";
 
 function App() {
   const [refresh, setRefresh] = useState(0);
@@ -28,6 +29,24 @@ function App() {
   // If not logged in, this show the auth form
   if (!user) {
     return <AuthForm onLogin={handleLogin} />;
+  }
+
+  if (user.role === "pm") {
+    return (
+      <div className="min-h-screen bg-gray-50 flex flex-col items-center p-6 gap-8">
+        <div className="w-full max-w-3xl flex justify-between items-center mt-6">
+          <h1 className="text-3xl font-bold text-gray-800">LocFlex</h1>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-gray-500">Hello, {user.name} (PM)</span>
+            <button onClick={handleLogout} className="text-sm text-red-500 hover:underline">
+              Log out
+            </button>
+          </div>
+        </div>
+        <PMDashboard refreshTrigger={refresh} />
+        <AssignmentForm onAssignmentAdded={() => setRefresh((r) => r + 1)} />
+      </div>
+    );
   }
 
   // If logged in, this shows the main app

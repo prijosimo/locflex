@@ -17,7 +17,7 @@ function AvailabilityForm({ onEntryAdded }) {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    user_id: 1, // hardcoded for now — will come from auth later
+                    user_id: JSON.parse(localStorage.getItem('user'))?.id,
                     date,
                     status,
                     notes,
