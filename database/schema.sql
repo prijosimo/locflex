@@ -5,6 +5,7 @@ CREATE TABLE users (
     email VARCHAR(150) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     timezone VARCHAR(50) DEFAULT 'UTC',
+    role VARCHAR(20) DEFAULT 'linguist' CHECK (role IN ('pm', 'linguist')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -38,5 +39,3 @@ CREATE TABLE assignments (
     status VARCHAR(20) CHECK (status IN ('pending', 'in_progress', 'completed')) DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
-role VARCHAR(20) DEFAULT 'linguist' CHECK (role IN ('pm', 'linguist')),
