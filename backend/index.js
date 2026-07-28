@@ -27,7 +27,14 @@ const app = express();
 
 // Applying CORS to every incoming request
 app.use(cors({
-    origin: ['https://locflex-rft26kb8q-loc19.vercel.app', 'http://localhost:5173'],
+    origin: function(origin, callback) {
+        // Allow requests from any vercel.app domain, localhost, or no origin
+        if (!origin || origin.includes('vercel.app') || origin.includes('localhost')) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
 }));
 
