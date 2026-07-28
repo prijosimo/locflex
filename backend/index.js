@@ -26,7 +26,10 @@ const authRoutes = require('./routes/auth');
 const app = express();
 
 // Applying CORS to every incoming request
-app.use(cors());
+app.use(cors({
+    origin: ['https://locflex-rft26kb8q-loc19.vercel.app', 'http://localhost:5173'],
+    credentials: true
+}));
 
 // Allowing Express to  parse incoming JSON request bodies automatically
 app.use(express.json());
