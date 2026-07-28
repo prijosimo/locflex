@@ -13,7 +13,7 @@ function AvailabilityForm({ onEntryAdded }) {
         e.preventDefault(); // prevents the page from refreshing on submit
 
         try {
-            const response = await fetch("http://localhost:5000/api/availability", {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/availability`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

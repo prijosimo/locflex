@@ -13,7 +13,7 @@ function PMDashboard({ refreshTrigger }) {
         setLoading(true);
         try {
         // This part fetches all linguists' availability and capacity from the PM route
-        const res = await fetch("http://localhost:5000/api/availability");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/availability`);
         const data = await res.json();
 
         // This part groups the data by user so each linguist appears once with all their entries
