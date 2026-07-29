@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Form component that lets a user assign a task and log the  word count
 function AssignmentForm({ onAssignmentAdded }) {
@@ -7,6 +7,33 @@ function AssignmentForm({ onAssignmentAdded }) {
     const [estimatedHours, setEstimatedHours] = useState("");
     const [dueDate, setDueDate] = useState("");
     const [message, setMessage] = useState("");
+    const [linguists, setLinguists] = useState([]);
+    const [selectedUserId, setSelectedUserId] = useState("");
+
+
+    // This fetches all linguists when the form loads
+    useEffect(() => {
+        const fetchLinguists = async () => {
+            try {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/availability`);
+                const data = await res.json();
+                // Extracting unique users from the response
+                const unique = [];
+                const seen = new Set();
+                data.forEach((row) => {
+                    if (!seen.has(row.id)) {
+                        seen.add(row.id);
+                        unique.push({ id: row.id, name: row.name });
+                    }
+                });
+                setLinguists(unique);
+                if (unique.length > 0) setSelectedUserId(unique[0].id);
+            } catch (err) {
+                console.error("Could not fetch linguists:", err);
+            }
+        };
+        fetchLinguists();
+    }, []);
 
 // Form submission: sends assignment data to the backend API
 const handleSubmit = async (e) => {
@@ -17,7 +44,7 @@ const handleSubmit = async (e) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                user_id: JSON.parse(localStorage.getItem('user'))?.id,
+                user_id: parseInt(selectedUserId), // added later to assign to selected linguist
                 task_name: taskName,
                 word_count: parseInt(wordCount),
                 estimated_hours: parseFloat(estimatedHours),
@@ -47,6 +74,24 @@ return (
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+
+            {/* Linguist selector — only shown if linguists are available */}
+            {linguists.length > 0 && (
+                <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                        Assign to
+                    </label>
+                    <select
+                        value={selectedUserId}
+                        onChange={(e) => setSelectedUserId(e.target.value)}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    >
+                        {linguists.map((l) => (
+                            <option key={l.id} value={l.id}>{l.name}</option>
+                        ))}
+                    </select>
+                </div>
+                )}
             <div>
                 <label className="block text-sm font-medium text-gray-600 mb-1">
                     Task Name
