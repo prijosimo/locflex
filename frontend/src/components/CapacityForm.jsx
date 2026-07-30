@@ -27,7 +27,7 @@ function CapacityForm({ onCapacitySaved }) {
         } else {
             setMessage("Error saving capacity. Please try again.");
         }
-        } catch (err) {
+        } catch {
             setMessage("Could not connect to the server.");
         }
     };

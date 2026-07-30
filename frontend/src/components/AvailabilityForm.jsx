@@ -33,7 +33,7 @@ function AvailabilityForm({ onEntryAdded }) {
         } else {
         setMessage("Error saving availability. Please try again.");
         }
-    } catch (err) {
+    } catch {
         setMessage("Could not connect to the server.");
     }
 };

@@ -44,7 +44,7 @@ function AuthForm({ onLogin }) {
         } else {
             setMessage(data.error || "Something went wrong.");
         }
-    } catch (err) {
+    } catch {
         setMessage("Could not connect to the server.");
     }
 };

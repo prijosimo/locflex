@@ -5,10 +5,6 @@ function PMDashboard({ refreshTrigger }) {
     const [linguists, setLinguists] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        fetchData();
-    }, [refreshTrigger]);
-
     const fetchData = async () => {
         setLoading(true);
         try {
@@ -39,12 +35,16 @@ function PMDashboard({ refreshTrigger }) {
         });
 
         setLinguists(Object.values(grouped));
-        } catch (err) {
-            console.error("Error fetching PM dashboard data:", err);
+        } catch {
+            console.error("Error fetching PM dashboard data:");
         } finally {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        fetchData();
+    }, [refreshTrigger]);
 
     // This part formats a date string into a readable format
     const formatDate = (dateStr) => {

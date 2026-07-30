@@ -67,7 +67,6 @@ function App() {
       <Dashboard refreshTrigger={refresh} />
       <AvailabilityForm onEntryAdded={() => setRefresh((r) => r + 1)} />
       <CapacityForm onCapacitySaved={() => setRefresh((r) => r + 1)} />
-      <AssignmentForm onAssignmentAdded={() => setRefresh((r) => r + 1)} />
     </div>
   );
 }

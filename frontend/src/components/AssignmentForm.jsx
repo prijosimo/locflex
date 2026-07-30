@@ -28,8 +28,8 @@ function AssignmentForm({ onAssignmentAdded }) {
                 });
                 setLinguists(unique);
                 if (unique.length > 0) setSelectedUserId(unique[0].id);
-            } catch (err) {
-                console.error("Could not fetch linguists:", err);
+            } catch {
+                console.error("Could not fetch linguists:");
             }
         };
         fetchLinguists();
@@ -62,7 +62,7 @@ const handleSubmit = async (e) => {
         } else {
             setMessage("Error assigning task. Please try again.");
         }
-    } catch (err) {
+    } catch {
         setMessage("Could not connect to the server.");
     }
     };

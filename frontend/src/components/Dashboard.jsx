@@ -9,9 +9,6 @@ function Dashboard({ refreshTrigger }) {
     const [hours, setHours] = useState(null); // This stores the total number of tasks and estimated hours from the assignments API
 
   // This part fetches data from the backend whenever the component loads or refreshTrigger changes
-    useEffect(() => {
-        fetchData();
-    }, [refreshTrigger]);
 
     const fetchData = async () => {
         setLoading(true);
@@ -38,8 +35,8 @@ function Dashboard({ refreshTrigger }) {
             const hoursData = await hoursRes.json();
             setHours(hoursData);
 
-        } catch (err) {
-            console.error("Error fetching dashboard data:", err);
+        } catch {
+            console.error("Error fetching dashboard data:");
         } finally {
             setLoading(false);
         }
@@ -47,7 +44,11 @@ function Dashboard({ refreshTrigger }) {
 
     };
 
-  // Help to format a date string into a readable format
+    useEffect(() => {
+        fetchData();
+    }, [refreshTrigger]);
+
+  // This part helps to format a date string into a readable format
     const formatDate = (dateStr) => {
         return new Date(dateStr).toLocaleDateString("en-IE", {
             weekday: "short",
